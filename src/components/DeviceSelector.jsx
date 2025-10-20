@@ -1,36 +1,36 @@
-// src/components/DeviceSelector.jsx
 import React, { useState } from "react";
+import { allDeviceOptions } from "../data/devices";
 
-export default function DeviceSelector({ devices, setDevices, selectedDevices, setSelectedDevices }) {
+export default function DeviceSelector({
+  devices,
+  setDevices,
+  selectedDevices,
+  setSelectedDevices,
+}) {
   const [showDropdown, setShowDropdown] = useState(false);
 
-  const allDeviceOptions = [
-    "iPhone 11",
-    "iPhone 14",
-    "iPhone 17",
-    "iPad",
-    "MacBook",
-    "Android",
-    "Samsung Tablet",
-  ];
-
-  const toggleDevice = (device) => {
-    setSelectedDevices((prev) => 
-        prev.includes(device)
-        ? prev.filter((d) => d !== device)
-        : [...prev, device]
+  // Toggle device selection by ID
+  const toggleDevice = (deviceId) => {
+    setSelectedDevices((prev) =>
+      prev.includes(deviceId)
+        ? prev.filter((id) => id !== deviceId)
+        : [...prev, deviceId]
     );
   };
 
-  const addDevice = (device) => {
-    if (!devices.includes(device)) {
-      setDevices([...devices, device]);
+  // Add a new device from the dropdown
+  const addDevice = (deviceId) => {
+    const newDevice = allDeviceOptions.find((d) => d.id === deviceId);
+    if (newDevice && !devices.some((d) => d.id === deviceId)) {
+      setDevices([...devices, newDevice]);
     }
-      setShowAddDevice(false);
-    
+    setShowDropdown(false);
   };
 
-  const availableToAdd = allDeviceOptions.filter((d) => !devices.includes(d));
+  // Devices not yet added
+  const availableToAdd = allDeviceOptions.filter(
+    (d) => !devices.some((dev) => dev.id === d.id)
+  );
 
   return (
     <div className="bg-white/50 shadow-md rounded-2xl p-6 mb-6 w-full max-w-lg">
@@ -40,15 +40,15 @@ export default function DeviceSelector({ devices, setDevices, selectedDevices, s
         {/* Device buttons */}
         {devices.map((device) => (
           <button
-            key={device}
-            onClick={() => toggleDevice(device)}
+            key={device.id}
+            onClick={() => toggleDevice(device.id)}
             className={`px-4 py-2 rounded-lg border transition ${
-              selectedDevices.includes(device)
+              selectedDevices.includes(device.id)
                 ? "bg-pink-300 text-white border-pink-400"
                 : "bg-gray-100 hover:bg-gray-200 border-gray-300"
             }`}
           >
-            {device}
+            {device.name}
           </button>
         ))}
 
@@ -60,17 +60,17 @@ export default function DeviceSelector({ devices, setDevices, selectedDevices, s
           +
         </button>
 
-        {/* Dropdown list for extra devices */}
+        {/* Dropdown list */}
         {showDropdown && (
-          <div className="absolute top-full mt-2 bg-white shadow-lg border rounded-xl p-3 w-48 z-10">
+          <div className="absolute top-full mt-2 bg-white shadow-lg border rounded-xl p-3 w-48 z-10 max-h-60 overflow-y-auto">
             {availableToAdd.length > 0 ? (
               availableToAdd.map((device) => (
                 <button
-                  key={device}
-                  onClick={() => addDevice(device)}
+                  key={device.id}
+                  onClick={() => addDevice(device.id)}
                   className="block w-full text-left px-3 py-2 rounded-md hover:bg-pink-100 text-gray-700"
                 >
-                  {device}
+                  {device.name}
                 </button>
               ))
             ) : (

@@ -3,11 +3,13 @@ import PinterestInput from "./components/PinterestInput";
 import DeviceSelector from "./components/DeviceSelector";
 import Button from "./components/Button";
 import StepsGuide from './components/StepsGuide';
+import { allDeviceOptions } from "./data/devices";
 import './App.css'
 import './index.css'
+
 function App() {
   const [link, setLink] = useState("");
-  const [devices, setDevices] = useState(["iPhone 11", "iPhone 14", "iPhone 17", "iPad"]);
+  const [devices, setDevices] = useState(allDeviceOptions.slice(0, 4));
   const [selectedDevices, setSelectedDevices] = useState([]);
 
   const handleGenerate = () => {
