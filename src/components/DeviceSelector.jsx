@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { allDeviceOptions } from "../data/devices";
+import { generateVisionBoard } from "../api/visionBoard";
 
 export default function DeviceSelector({
   devices,

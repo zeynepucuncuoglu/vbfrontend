@@ -1,5 +1,6 @@
 // src/components/GenerateButton.jsx
 import React from "react";
+import { generateVisionBoard } from "../api/visionBoard";
 
 export default function Button({ onGenerate }) {
   return (
